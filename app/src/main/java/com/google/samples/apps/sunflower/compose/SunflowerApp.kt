@@ -26,6 +26,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import com.google.samples.apps.sunflower.R
 import com.google.samples.apps.sunflower.compose.gallery.GalleryScreen
 import com.google.samples.apps.sunflower.compose.home.HomeScreen
@@ -44,41 +45,35 @@ fun SunFlowerNavHost(
     navController: NavHostController
 ) {
     val activity = (LocalContext.current as Activity)
-    NavHost(navController = navController, startDestination = Screen.Home.route) {
-        composable(route = Screen.Home.route) {
+    NavHost(navController = navController, startDestination = Screen.Home) {
+        composable<Screen.Home>{
             HomeScreen(
                 onPlantClick = {
                     navController.navigate(
-                        Screen.PlantDetail.createRoute(
-                            plantId = it.plantId
-                        )
+                        Screen.PlantDetail(plantId = it.plantId)
                     )
                 }
             )
         }
-        composable(
-            route = Screen.PlantDetail.route,
-            arguments = Screen.PlantDetail.navArguments
-        ) {
+        composable<Screen.PlantDetail>{navBackStack->
+            val navData = navBackStack.toRoute<Screen.PlantDetail>()
             PlantDetailsScreen(
+                plantId= navData.plantId,
                 onBackClick = { navController.navigateUp() },
                 onShareClick = {
                     createShareIntent(activity, it)
                 },
                 onGalleryClick = {
                     navController.navigate(
-                        Screen.Gallery.createRoute(
-                            plantName = it.name
-                        )
+                        Screen.Gallery(plantName = it.name)
                     )
                 }
             )
         }
-        composable(
-            route = Screen.Gallery.route,
-            arguments = Screen.Gallery.navArguments
-        ) {
+        composable<Screen.Gallery>{navBackStack->
+            val navData = navBackStack.toRoute<Screen.Gallery>()
             GalleryScreen(
+                plantName= navData.plantName,
                 onPhotoClick = {
                     val uri = Uri.parse(it.user.attributionUrl)
                     val intent = Intent(Intent.ACTION_VIEW, uri)

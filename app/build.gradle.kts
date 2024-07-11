@@ -20,6 +20,7 @@ plugins {
   alias(libs.plugins.ksp)
   alias(libs.plugins.hilt)
   alias(libs.plugins.compose.compiler)
+  alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -160,6 +161,9 @@ dependencies {
   androidTestImplementation(libs.accessibility.test.framework)
   androidTestImplementation(libs.kotlinx.coroutines.test)
   testImplementation(libs.junit)
+
+  implementation(libs.kotlinx.serialization.json)
+
 }
 
 fun getUnsplashAccess(): String? {

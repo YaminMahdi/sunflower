@@ -21,6 +21,7 @@ import android.text.method.LinkMovementMethod
 import androidx.annotation.VisibleForTesting
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.rememberTransition
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.Image
@@ -111,11 +112,13 @@ data class PlantDetailsCallbacks(
 
 @Composable
 fun PlantDetailsScreen(
+    plantId: String,
     plantDetailsViewModel: PlantDetailViewModel = hiltViewModel(),
     onBackClick: () -> Unit,
     onShareClick: (String) -> Unit,
     onGalleryClick: (Plant) -> Unit,
 ) {
+    plantDetailsViewModel.plantId = plantId
     val plant = plantDetailsViewModel.plant.observeAsState().value
     val isPlanted = plantDetailsViewModel.isPlanted.collectAsStateWithLifecycle().value
     val showSnackbar = plantDetailsViewModel.showSnackbar.observeAsState().value
@@ -164,7 +167,7 @@ fun PlantDetails(
     val toolbarState = plantScroller.getToolbarState(LocalDensity.current)
 
     // Transition that fades in/out the header with the image and the Toolbar
-    val transition = updateTransition(transitionState, label = "")
+    val transition = rememberTransition(transitionState, label = "")
     val toolbarAlpha = transition.animateFloat(
         transitionSpec = { spring(stiffness = Spring.StiffnessLow) }, label = ""
     ) { toolbarTransitionState ->

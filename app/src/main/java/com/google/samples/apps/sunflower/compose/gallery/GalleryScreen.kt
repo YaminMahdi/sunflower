@@ -59,10 +59,12 @@ import kotlinx.coroutines.flow.flowOf
 
 @Composable
 fun GalleryScreen(
+    plantName: String,
     viewModel: GalleryViewModel = hiltViewModel(),
     onPhotoClick: (UnsplashPhoto) -> Unit,
     onUpClick: () -> Unit,
 ) {
+    viewModel.queryString = plantName
     GalleryScreen(
         plantPictures = viewModel.plantPictures,
         onPhotoClick = onPhotoClick,

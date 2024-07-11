@@ -37,7 +37,7 @@ class GalleryViewModel @Inject constructor(
     private val repository: UnsplashRepository
 ) : ViewModel() {
 
-    private var queryString: String? = savedStateHandle["plantName"]
+    var queryString = ""
 
 
     private val _plantPictures = MutableStateFlow<PagingData<UnsplashPhoto>?>(null)
@@ -52,7 +52,7 @@ class GalleryViewModel @Inject constructor(
 
         viewModelScope.launch {
             try {
-                _plantPictures.value = repository.getSearchResultStream(queryString ?: "").cachedIn(viewModelScope).first()
+                _plantPictures.value = repository.getSearchResultStream(queryString).cachedIn(viewModelScope).first()
             } catch (e: Exception) {
                 e.printStackTrace()
             }

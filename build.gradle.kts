@@ -31,6 +31,7 @@ plugins {
     alias(libs.plugins.gradle.versions)
     alias(libs.plugins.version.catalog.update)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.kotlin.serialization) apply false
 }
 
 apply("${project.rootDir}/buildscripts/toml-updater-config.gradle")
